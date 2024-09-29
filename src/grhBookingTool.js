@@ -8,7 +8,7 @@ import ItemBooking from './components/ItemBooking';
 import UpcomingEvents from './components/UpcomingEvents';
 import './App.css';
 
-function App() {
+function GrhBookingTool() {
     return (
         <Router>
             <div className="App">
@@ -26,4 +26,4 @@ function App() {
     );
 }
 
-export default App;
+export default GrhBookingTool;
