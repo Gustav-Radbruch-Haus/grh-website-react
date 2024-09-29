@@ -1,25 +1,29 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Container } from '@mui/material';
+import Header from './components/Header';
+import RoomsOverview from './components/RoomsOverview';
+import Bookings from './components/Bookings';
+import ItemBooking from './components/ItemBooking';
+import UpcomingEvents from './components/UpcomingEvents';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Router>
+            <div className="App">
+                <Header />
+                <Container sx={{ mt: 2 }}>
+                    <Routes>
+                        <Route path="/" element={<RoomsOverview />} />
+                        <Route path="/bookings" element={<Bookings />} />
+                        <Route path="/items" element={<ItemBooking />} />
+                        <Route path="/events" element={<UpcomingEvents />} />
+                    </Routes>
+                </Container>
+            </div>
+        </Router>
+    );
 }
 
 export default App;
