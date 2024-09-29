@@ -6,7 +6,7 @@ import RoomsOverview from './components/RoomsOverview';
 import Bookings from './components/Bookings';
 import ItemBooking from './components/ItemBooking';
 import UpcomingEvents from './components/UpcomingEvents';
-import './App.css';
+import './grhBookingTool.css';
 
 function GrhBookingTool() {
     return (
