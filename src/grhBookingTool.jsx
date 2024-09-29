@@ -11,17 +11,15 @@ import './grhBookingTool.css';
 function GrhBookingTool() {
     return (
         <Router>
-            <div className="App">
-                <Header />
-                <Container sx={{ mt: 2 }}>
-                    <Routes>
-                        <Route path="/" element={<RoomsOverview />} />
-                        <Route path="/bookings" element={<Bookings />} />
-                        <Route path="/items" element={<ItemBooking />} />
-                        <Route path="/events" element={<UpcomingEvents />} />
-                    </Routes>
-                </Container>
-            </div>
+            <Header />
+            <Container sx={{ mt: 2 }}>
+                <Routes>
+                    <Route path="/" element={<RoomsOverview />} />
+                    <Route path="/bookings" element={<Bookings />} />
+                    <Route path="/items" element={<ItemBooking />} />
+                    <Route path="/events" element={<UpcomingEvents />} />
+                </Routes>
+            </Container>
         </Router>
     );
 }
