@@ -6,9 +6,11 @@ This repo is the heart of the development for the new and informative Website of
 
 Follow the descriptions in the [Getting Started with React](GET_STARTED.md)-File in this repo to startup your development process.
 
-## Getting started (Deployment)
+## Getting started (Deployment for Dev)
 
-TBA
+For the deployment we use the Github-Workflows with CI/CD to deploy the app automatically to our dev-server. 
+
+The pipeline will trigger automatically von merge requests on the main-branch and will deploy through the pipeline.
 
 ## Participation
 
