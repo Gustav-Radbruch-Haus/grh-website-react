@@ -7,6 +7,8 @@ import Bookings from './components/Bookings';
 import ItemBooking from './components/ItemBooking';
 import UpcomingEvents from './components/UpcomingEvents';
 import './grhBookingTool.css';
+import FAQOverview from "./components/FAQOverview";
+import FAQAccordion from "./components/FAQAccordion";
 
 function GrhBookingTool() {
     return (
@@ -18,6 +20,8 @@ function GrhBookingTool() {
                     <Route path="/bookings" element={<Bookings />} />
                     <Route path="/items" element={<ItemBooking />} />
                     <Route path="/events" element={<UpcomingEvents />} />
+                    <Route path="/faq" element={<FAQOverview />} />
+                    <Route path="/faq/:category" element={<FAQAccordion />} />
                 </Routes>
             </Container>
         </Router>
