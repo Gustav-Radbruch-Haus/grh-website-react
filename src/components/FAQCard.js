@@ -38,7 +38,7 @@ function FAQCard({ category, image, link }) {
                 href={link}
                 fullWidth
             >
-                Learn More
+                {category}
             </Button>
         </Item>
     );
