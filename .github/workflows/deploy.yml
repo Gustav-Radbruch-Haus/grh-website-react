@@ -37,7 +37,7 @@ jobs:
 
       - name: Copy Docker image and compose file to remote server
         run: |
-          scp grh-backend_${{ github.sha }}.tar ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SERVER_USER }}/grh-website_${{ github.sha }}.tar
+          scp grh-website_${{ github.sha }}.tar ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SERVER_USER }}/grh-website_${{ github.sha }}.tar
           scp docker-compose.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SERVER_USER }}/docker-compose.yml
 
       - name: Load and run Docker container on remote server
