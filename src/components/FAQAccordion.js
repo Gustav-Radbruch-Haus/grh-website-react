@@ -3,6 +3,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useParams } from "react-router-dom";
+import config from "../config";
 import { LanguageContext } from '../context/LanguageContext'; // Ensure correct import
 
 const FAQAccordion = () => {
@@ -13,7 +14,7 @@ const FAQAccordion = () => {
     useEffect(() => {
         const fetchFaqs = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/public/faq/categories/${language}/${category}/faqs`);
+                const response = await fetch(`${config.baseURL}/api/public/faq/categories/${language}/${category}/faqs`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

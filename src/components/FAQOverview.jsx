@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Grid, Box, Typography } from '@mui/material';
 import FAQCard from "./FAQCard";
+import config from "../config";
 import { LanguageContext } from '../context/LanguageContext'; // Ensure correct path
 
 const FAQOverview = () => {
@@ -12,7 +13,7 @@ const FAQOverview = () => {
         const fetchCategories = async () => {
             try {
                 // TODO: Move BASE-URL to global value!
-                const response = await fetch(`http://localhost:8080/api/public/faq/categories/${language}`);
+                const response = await fetch(`${config.baseURL}/api/public/faq/categories/${language}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
