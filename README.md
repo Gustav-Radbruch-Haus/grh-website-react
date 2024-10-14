@@ -4,6 +4,8 @@ This repo is the heart of the development for the new and informative Website of
 
 ## Getting started (Development)
 
+Important noctice: Check the config.json to match the baseURL your local development-backend or the testing-backend!
+
 Follow the descriptions in the [Getting Started with React](GET_STARTED.md)-File in this repo to startup your development process.
 
 ## Getting started (Deployment for Dev)
