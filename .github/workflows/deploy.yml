@@ -44,7 +44,7 @@ jobs:
         run: |
           ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
             docker load -i /home/${{ secrets.REMOTE_USER }}/grh-website_${{ github.sha }}.tar
-            export TAG=${{ github.sha }}
+            export FRONTENDTAG=${{ github.sha }}
             cd /home/${{ secrets.REMOTE_USER }}/
             docker compose up -d
 
