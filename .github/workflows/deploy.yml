@@ -46,5 +46,6 @@ jobs:
             docker load -i /home/${{ secrets.SERVER_USER }}/grh-website_${{ github.sha }}.tar
             export FRONTENDTAG=${{ github.sha }}
             cd /home/${{ secrets.SERVER_USER }}/
-            docker compose up -d
-
+            docker compose stop grh-website
+            docker compose rm -f grh-website
+            docker compose up -d grh-website
