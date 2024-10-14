@@ -14,38 +14,37 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      # Step 2: Set up Docker
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Step 3: Build Docker image
+      - name: Build Docker Image
+        run: docker build -t grh-website:${{ github.sha }} .
+
+      - name: Save Docker Image
+        run: docker save -o grh-website_${{ github.sha }}.tar grh-website:${{ github.sha }}
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.4
         with:
-          node-version: '16'  # Specify the Node.js version you need
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # Step 3: Install dependencies
-      - name: Install Dependencies
-        run: npm install
+      - name: Add remote server to known hosts
+        run: |
+          mkdir -p ~/.ssh/
+          ssh-keyscan ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
 
-      # Step 4: Build the React app
-      - name: Build React App
-        run: npm run build
+      - name: Copy Docker image and compose file to remote server
+        run: |
+          scp grh-backend_${{ github.sha }}.tar ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/home/${{ secrets.REMOTE_USER }}/grh-website_${{ github.sha }}.tar
+          scp docker-compose.yml ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/home/${{ secrets.REMOTE_USER }}/docker-compose.yml
 
-      # Step 5: Deploy to Server
-      - name: Deploy to Server
-        uses: appleboy/scp-action@v0.1.3
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          source: "build/"
-          target: "/var/www/react-app/build"
+      - name: Load and run Docker container on remote server
+        run: |
+          ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
+            docker load -i /home/${{ secrets.REMOTE_USER }}/grh-website_${{ github.sha }}.tar
+            export TAG=${{ github.sha }}
+            cd /home/${{ secrets.REMOTE_USER }}/
+            docker compose up -d
 
-      # Optional Step 6: Restart NGINX (if needed)
-      - name: Restart NGINX
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: |
-            sudo systemctl reload nginx
