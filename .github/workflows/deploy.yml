@@ -20,7 +20,7 @@ jobs:
 
       # Step 3: Build Docker image
       - name: Build Docker Image
-        run: docker build -t grh-website:${{ github.sha }} .
+        run: docker build -t grh-website:latest-test .
 
       - name: Save Docker Image
         run: docker save -o grh-website_${{ github.sha }}.tar grh-website:${{ github.sha }}
@@ -44,7 +44,6 @@ jobs:
         run: |
           ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             docker load -i /home/${{ secrets.SERVER_USER }}/grh-website_${{ github.sha }}.tar
-            export FRONTENDTAG=${{ github.sha }}
             cd /home/${{ secrets.SERVER_USER }}/
             docker compose stop frontend
             docker compose rm -f frontend
