@@ -1,16 +1,36 @@
-import React from 'react';
+// src/components/FAQOverview.jsx
+import React, { useEffect, useState, useContext } from 'react';
 import { Grid, Box, Typography } from '@mui/material';
 import FAQCard from "./FAQCard";
+import config from "../config";
+import { LanguageContext } from '../context/LanguageContext'; // Ensure correct path
 
 const FAQOverview = () => {
-    const categories = [
-        { name: "Internet", image: "/images/internet-router-question-person-cable-chaos.png", link: "/faq/internet" },
-        { name: "House Management", image: "/images/broken-sink-chaos-room.png", link: "faq/house-management" },
-        { name: "Apartment", image: "/images/broken-sink-chaos-room.png", link: "/faq/apartment" },
-        { name: "Billing", image: "/images/broken-sink-chaos-room.png", link: "/faq/billing" },
-        { name: "Facilities", image: "/images/broken-sink-chaos-room.png", link: "/faq/facilities" },
-        { name: "Maintenance", image: "/images/broken-sink-chaos-room.png", link: "/faq/maintenance" }
-    ];
+    const [categories, setCategories] = useState([]);
+    const { language } = useContext(LanguageContext); // Access the global language
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                // TODO: Move BASE-URL to global value!
+                const response = await fetch(`${config.baseURL}/api/public/faq/categories/${language}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setCategories(data.map(item => ({
+                    name: item.title,
+                    image: item.image,
+                    link: item.link,
+                    description: item.description
+                })));
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
+        fetchCategories();
+    }, [language]);
 
     return (
         <Box sx={{ flexGrow: 1 }}>

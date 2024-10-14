@@ -1,38 +1,43 @@
-import React from 'react';
+// src/components/FAQAccordion.js
+import React, { useEffect, useState, useContext } from 'react';
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
+import config from "../config";
+import { LanguageContext } from '../context/LanguageContext'; // Ensure correct import
 
-// Example data
-// TODO: Replace this with a call from the FAQ-Database
-const FAQData = [
-    {
-        question: "What is the return policy?",
-        answer: "Our return policy lasts 30 days. If 30 days have gone by since your purchase, unfortunately, we can’t offer you a refund or exchange."
-    },
-    {
-        question: "How do I track my order?",
-        answer: "Once your order has shipped, you will receive an email with a tracking number and a link to track your package."
-    },
-    {
-        question: "Can I purchase items again?",
-        answer: "Yes, simply log in to your account and reorder your desired items."
-    },
-    // Add more questions and answers here
-];
+const FAQAccordion = () => {
+    const { category } = useParams();
+    const { language } = useContext(LanguageContext); // Access the global language
+    const [faqs, setFaqs] = useState([]);
 
-function FAQAccordion() {
-    const { category } = useParams(); // Just to check if the category variable is used
+    useEffect(() => {
+        const fetchFaqs = async () => {
+            try {
+                const response = await fetch(`${config.baseURL}/api/public/faq/categories/${language}/${category}/faqs`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                setFaqs(data);
+            } catch (error) {
+                console.error('Error fetching FAQs:', error);
+            }
+        };
+
+        fetchFaqs();
+    }, [language, category]);
+
     return (
         <div>
-            {FAQData.map((item, index) => (
+            {faqs.map((item, index) => (
                 <Accordion key={index}>
                     <AccordionSummary
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls={`panel${index}-content`}
                         id={`panel${index}-header`}
                     >
-                        <Typography variant="h6">{item.question} - Category {category}</Typography>
+                        <Typography variant="h6">{item.question}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <Typography>
@@ -43,6 +48,6 @@ function FAQAccordion() {
             ))}
         </div>
     );
-}
+};
 
 export default FAQAccordion;
