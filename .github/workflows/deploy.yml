@@ -33,18 +33,18 @@ jobs:
       - name: Add remote server to known hosts
         run: |
           mkdir -p ~/.ssh/
-          ssh-keyscan ${{ secrets.REMOTE_HOST }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
       - name: Copy Docker image and compose file to remote server
         run: |
-          scp grh-backend_${{ github.sha }}.tar ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/home/${{ secrets.REMOTE_USER }}/grh-website_${{ github.sha }}.tar
-          scp docker-compose.yml ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:/home/${{ secrets.REMOTE_USER }}/docker-compose.yml
+          scp grh-backend_${{ github.sha }}.tar ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SERVER_USER }}/grh-website_${{ github.sha }}.tar
+          scp docker-compose.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SERVER_USER }}/docker-compose.yml
 
       - name: Load and run Docker container on remote server
         run: |
-          ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
-            docker load -i /home/${{ secrets.REMOTE_USER }}/grh-website_${{ github.sha }}.tar
+          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
+            docker load -i /home/${{ secrets.SERVER_USER }}/grh-website_${{ github.sha }}.tar
             export FRONTENDTAG=${{ github.sha }}
-            cd /home/${{ secrets.REMOTE_USER }}/
+            cd /home/${{ secrets.SERVER_USER }}/
             docker compose up -d
 
